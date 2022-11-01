@@ -1,0 +1,21 @@
+{
+  "name": "mernstackproject-11-2-2022",
+  "version": "1.0.0",
+  "description": "Goalsetter application Project",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "server": "nodemon  Backend/server.js"
+  },
+  "author": "alnil tanudtanud",
+  "license": "ISC",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^6.7.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
