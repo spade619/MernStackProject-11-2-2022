@@ -32,7 +32,7 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new Error('User already exsists')
     }
 
-    //Hash password 
+    //Hash password using bcrypt
     const salt = await bcrypt.genSalt(10)
     const hashedPassword = await bcrypt.hash(password, salt)
     //create user
@@ -46,7 +46,8 @@ const registerUser = asyncHandler(async (req, res) => {
         res.status(200).json({
             _id: user.id,
             name: user.name,
-            email: user.email
+            email: user.email,
+            token: generateToken(user._id)
         })
     } else {
         res.status(400)
@@ -61,20 +62,52 @@ const registerUser = asyncHandler(async (req, res) => {
 //route = post /api/users/login
 //access = Public
 const loginUser = asyncHandler(async (req, res) => {
+    //retrieve email and password
+    const {email, password} = req.body
+
+    //check for user email
+    const user = await User.findOne({email})
+    //check the password and compare using bcrypt and returns some json data
+
+    if (user && (await bcrypt.compare(password, user.password))){
+        res.json({
+            _id: user.id,
+            name: user.name,
+            email: user.email,
+            token: generateToken(user._id)
+        })
+    } else {
+        res.status(400)
+        throw new Error('Invalid credentials')
+    }
+
     console.log(req.path, req.method)
-    res.json({message: ' User logged in'})
+    
 
 })
 
 //---------------------------------------------------------------------------------
 //description = to get a logged in user
 //route = GET /api/users/me
-//access = Public
+//access = Private
 const getMe = asyncHandler(async (req, res) => {
+    //destructure
+    const {_id, name, email} = await User.findById(req.user.id)
+    res.status(200).json({
+        id: _id,
+        name,
+        email,
+    })
     console.log(req.path, req.method)
-    res.json({message: 'user info displayed'})
-
+  
 })
+
+//to generate JWT WEB TOKEN
+const generateToken = (id) => {
+    return jwt.sign({ id }, process.env.JWT_SECRET, {
+        expiresIn: '30d',
+    })
+}
 
 module.exports = {
     registerUser,
