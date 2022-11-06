@@ -22,7 +22,7 @@ const getGoals = asyncHandler(async (req, res) => {
 //route = POST /api/goals
 //access = private
 
-const setGoals = asyncHandler(async (req, res) => {
+const setGoal = asyncHandler(async (req, res) => {
    
     //check for errors
     if (!req.body.text) {
@@ -53,17 +53,16 @@ const updateGoal = asyncHandler(async (req, res) => {
         res.status(400)
         throw new Error('Goal not found')
     }
-    //get user using FindById
-    const user = await User.findById(req.user.id)
+ 
 
     //check if user exists
-    if (!user){
+    if (!req.user){
         res.status(400)
         throw new Error('User not found')
     }
 
     // to make only the logged in user can update the goals
-    if(goal.user.toString()!== user.id) {
+    if(goal.user.toString()!== req.user.id) {
         res.status(400)
         throw new Error('User not authorized')
     }
@@ -91,17 +90,16 @@ const deleteGoal = asyncHandler(async (req, res) => {
              throw new Error('Goal not found')
          }
 
-       //get user using FindById
-    const user = await User.findById(req.user.id)
+
 
     //check if user exists
-    if (!user){
+    if (!req.user){
         res.status(400)
         throw new Error('User not found')
     }
 
     // to make only the logged in user can update the goals
-    if(goal.user.toString()!== user.id) {
+    if(goal.user.toString() !== req.user.id) {
         res.status(400)
         throw new Error('User not authorized')
     }    
@@ -116,7 +114,7 @@ const deleteGoal = asyncHandler(async (req, res) => {
 
 module.exports = {
     getGoals,
-    setGoals,
+    setGoal,
     updateGoal,
-    deleteGoal
+    deleteGoal,
 }

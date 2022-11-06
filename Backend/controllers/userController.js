@@ -39,7 +39,7 @@ const registerUser = asyncHandler(async (req, res) => {
     const user = await User.create({
         name,
         email,
-        password: hashedPassword
+        password: hashedPassword,
     })
 
     if(user) {
@@ -47,7 +47,7 @@ const registerUser = asyncHandler(async (req, res) => {
             _id: user.id,
             name: user.name,
             email: user.email,
-            token: generateToken(user._id)
+            token: generateToken(user._id),
         })
     } else {
         res.status(400)
@@ -74,7 +74,7 @@ const loginUser = asyncHandler(async (req, res) => {
             _id: user.id,
             name: user.name,
             email: user.email,
-            token: generateToken(user._id)
+            token: generateToken(user._id),
         })
     } else {
         res.status(400)
@@ -90,14 +90,8 @@ const loginUser = asyncHandler(async (req, res) => {
 //description = to get a logged in user
 //route = GET /api/users/me
 //access = Private
-const getMe = asyncHandler(async (req, res) => {
-    //destructure
-    const {_id, name, email} = await User.findById(req.user.id)
-    res.status(200).json({
-        id: _id,
-        name,
-        email,
-    })
+const getMe = asyncHandler(async (req, res) => { 
+    res.status(200).json(req.user)
     console.log(req.path, req.method)
   
 })
@@ -112,5 +106,5 @@ const generateToken = (id) => {
 module.exports = {
     registerUser,
     loginUser,
-    getMe
+    getMe,
 }

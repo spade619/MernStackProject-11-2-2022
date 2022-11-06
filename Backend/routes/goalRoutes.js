@@ -6,9 +6,9 @@ const express = require('express')
 const router = express.Router()
 //import and use request from goalController.js
 const {getGoals,
-       setGoals,
+       setGoal,
        updateGoal,
-       deleteGoal} = require('../controllers/goalController')
+       deleteGoal,} = require('../controllers/goalController')
 
        const {protect} = require('../middleware/authMiddleware')
 //use request
@@ -21,7 +21,7 @@ const {getGoals,
 //much cleaner style
 
 //protect method added to protect the routes
-router.route('/').get(protect, getGoals).post(protect, setGoals)
+router.route('/').get(protect, getGoals).post(protect, setGoal)
 router.route('/:id').delete(protect, deleteGoal).put(protect, updateGoal)
 
 

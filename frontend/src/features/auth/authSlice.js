@@ -8,7 +8,7 @@ const initialState = {
     isError: false,
     isSuccess: false,
     isLoading: false,
-    message: ''
+    message: '',
 }
 
 //register user
@@ -51,7 +51,7 @@ export const authSlice = createSlice({
             state.isSuccess = false
             state.isError = false
             state.message = ''
-        }
+        },
     },
         extraReducers: (builder) => {
             builder

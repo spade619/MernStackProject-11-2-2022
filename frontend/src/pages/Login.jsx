@@ -48,7 +48,7 @@ function Login() {
       e.preventDefault()
       const userData = {
         email,
-        password
+        password,
       }
       dispatch(login(userData))
     }
